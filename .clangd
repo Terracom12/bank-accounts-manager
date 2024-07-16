@@ -1,0 +1,10 @@
+CompileFlags:
+    Add: [-std=c++20,-Wall,-Wextra,-pedantic,-Wmaybe-uninitialized,-Wuninitialized]
+
+InlayHints:
+    BlockEnd: No
+    Designators: Yes
+    Enabled: Yes
+    ParameterNames: Yes
+    DeducedTypes: Yes
+    TypeNameLimit: 24

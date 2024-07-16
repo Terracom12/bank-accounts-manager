@@ -1,0 +1,16 @@
+# clangd cache
+.cache/
+
+# Binary / Build output
+build/
+bin/
+
+# Tar archives
+*.tar
+
+# Output executables
+out
+*.out
+
+# Compilation database (for local editor config and CI)
+**/compile_commands.json

@@ -1,0 +1,19 @@
+{
+    "version": "0.2",
+    "ignorePaths": [],
+    "dictionaryDefinitions": [],
+    "dictionaries": [],
+    "words": [
+        "Struct"
+    ],
+    "ignoreWords": [
+        "NOLINT",
+        "NOLINTBEGIN",
+        "NOLINTEND",
+        "NOLINTNEXTLINE",
+        "Wextra",
+        "Wshadow",
+        "Wuninitialized"
+    ],
+    "import": []
+}
