@@ -49,7 +49,7 @@ CXX := g++
 # Executable name
 EXE := out
 # Test Names
-TESTS := test_example test_dos
+TESTS := test_example
 # List of source files
 SRCS := src/main.cpp
 # Object files to be created in `./build`. Correspond 1-to-1 with sources, in that `myFile.cpp` => `build/myFile.o`
@@ -71,11 +71,16 @@ test: $(TESTS:%=build/%)
 
 .PHONY: clean
 clean:
-	rm -rf build
+	rm -rf build compile_commands.json
 
 .PHONY: tar
 tar: $(EXE).scr
 	tar cf $(EXE).tar src/** Makefile
+
+.PHONY: compile_commands
+compile_commands:
+	make clean
+	bear -- make all
 
 
 ############################ GENERIC BUILDING RULES ############################
@@ -88,6 +93,8 @@ build/%.o: src/%.cpp
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) -c $< -o $@
 
+
+# TODO: Warn if gtest is not installed
 build/%: test/%.cpp
 	@mkdir -p build
 	$(CXX) $(CXXFLAGS) $(CPPFLAGS) $(LDFLAGS) -lgtest -lgtest_main $< -o $@

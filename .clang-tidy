@@ -26,7 +26,8 @@ Checks: "*,\
   -modernize-use-trailing-return-type,\
   -misc-non-private-member-variables-in-classes,\
   -cert-dcl21-cpp,\
-  -hicpp-member-init"
+  -hicpp-member-init,\
+  -readability-identifier-naming" # Temporarily disabled while we decide on conventions
 WarningsAsErrors: ""
 CheckOptions:
   # Conventional use of `os` and `is` for std::ostream and std::istream stream operator overloads
