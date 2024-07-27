@@ -12,7 +12,6 @@ CertificateOfDepositAccount::CertificateOfDepositAccount(const CertificateOfDepo
     , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
 
 void CertificateOfDepositAccount::update(DatePeriod period) {
-    fmt::println("updated!!!");
     addStatementsThrough(period.end);
     if (isMature_) {
         return;
@@ -24,7 +23,7 @@ void CertificateOfDepositAccount::update(DatePeriod period) {
         }
 
         auto interestAmount = getBalance() * rate;
-        balance_ -= interestAmount;
+        balance_ += interestAmount;
         addToMonthlyStatement(when, {
                                         .details = fmt::format("Accumulated interest at {:.2f}%", rate * 100),
                                         .balanceChange = interestAmount,

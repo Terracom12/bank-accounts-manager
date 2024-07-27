@@ -1,6 +1,6 @@
 .PHONY: all
 all:
-	cmake -S . -B build -G "Unix Makefiles"
+	cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL:=TRUE -DCMAKE_BUILD_TYPE:STRING:=Release
 	cmake --build build --config Release
 	cp ./build/bank_accounts_exe ./hw06
 

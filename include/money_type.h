@@ -31,21 +31,14 @@ public:
         return fmt::format(std::locale{}, "${:L}.{:02}", dollars_, cents_);
     }
 
-    constexpr Money operator+(Money rhs) const {
-        rhs += *this;
-        rhs.handleChange();
-        return rhs;
-    }
+    constexpr Money operator+(const Money& rhs) const { return Money{*this} += rhs; }
     constexpr Money& operator+=(const Money& rhs) {
         dollars_ += rhs.dollars_;
         cents_ += rhs.cents_;
         handleChange();
         return *this;
     }
-    constexpr Money operator-(Money rhs) const {
-        rhs += *this;
-        return rhs;
-    }
+    constexpr Money operator-(Money rhs) const { return Money{*this} -= rhs; }
     constexpr Money& operator-=(const Money& rhs) {
         dollars_ -= rhs.dollars_;
         cents_ -= rhs.cents_;
@@ -53,10 +46,7 @@ public:
         return *this;
     }
 
-    constexpr Money operator*(Money rhs) const {
-        rhs *= *this;
-        return rhs;
-    }
+    constexpr Money operator*(Money rhs) const { return Money{*this} *= rhs; }
     constexpr Money& operator*=(const Money& rhs) {
         dollars_ *= rhs.dollars_;
         cents_ *= rhs.cents_;

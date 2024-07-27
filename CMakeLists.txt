@@ -44,14 +44,14 @@ target_compile_options(
 	bank_accounts_lib PUBLIC
 	-Wall -Wextra -Wpedantic -Wshadow -Wconversion -Werror
 	"$<$<CONFIG:Debug>:-g;-O0;-fno-omit-frame-pointer>"
-	# "$<$<CONFIG:Debug>:-fsanitize=address,undefined>"
+	"$<$<CONFIG:Debug>:-fsanitize=address,undefined>"
 	"$<$<CONFIG:Release>:-O3;-Werror>"
 )
 
 target_link_options(
 	bank_accounts_lib PUBLIC
 	"$<$<CONFIG:Debug>:-g3;-O0;-fno-omit-frame-pointer>"
-	# "$<$<CONFIG:Debug>:-fsanitize=address,undefined>"
+	"$<$<CONFIG:Debug>:-fsanitize=address,undefined>"
 )
 
 target_include_directories(
