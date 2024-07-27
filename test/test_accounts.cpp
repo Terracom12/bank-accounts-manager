@@ -79,15 +79,69 @@ TEST_CASE("Simple accounts tests (no service charge and no interest)", "[account
 }
 
 TEST_CASE("CD account tests", "[account]") {
-    // TODO
+    SimTimeManager::resetDay();
+    constexpr auto startingBalance = 100'000_dollars;
+    const InterestHandler InterestHandler(InterestType::Daily, .06);
+
+    CertificateOfDepositAccount cd_account("cd_account", startingBalance, InterestHandler, SimTimeManager{}, std::chrono::months numMaturityMonths)
+
+    SECTION("Inital balance and maturity") {
+        CHECK(cd_account.getBalance() == startingBalance);
+        CHECK(cd_account.getMaturityPeriod() == std::chrono::months numMaturityMonths);
+    }
+
+    SECTION("Withdrawal before maturity") {
+        CHECK_THROWS(cd_account.withdraw(50'000_dollars));
+    }
+
+    SECTION("Withdrawal after maturity") {
+        SimTimeManager::incrDay(std::chrono::days{1000});
+        SimTimeManager::updateAll();
+        CHECK_NOTHROW(cd_account.withdraw(50'000_dollars));
+        CHECK(cd_account.getBalance() == (startingBalance + (startingBalance * 0.06)) - 50'000_dollars);
+    }
 }
 
+
 TEST_CASE("Interest tests", "[account]") {
-    // TODO
+    SimTimeManager::resetDay();
+    constexpr auto startingBalance = 100,000_dollars;
+
+    SECTION("Daily interest accumulation") {
+        const InterestHandler dailyInterestHandler(InterestType::Daily, 0.01);
+        SavingsAccount savings("savings", startingBalance, dailyInterestHandler, SimTimeManager{});
+
+        SimTimeManager::incrDay(std::chrono::days{5});
+        SimTimeManager::updateAll();
+        CHECK(savings.getBalance() == startingBalance * std::pow(1.01, 10));
+    }
+
+    SECTION("Monthly interest accumulation") {
+        const InterestHandler monthlyInterestHandler(InterestType::Monthly, 0.05);
+        SavingsAccount savings("savings", startingBalance, dailyInterestHandler, SimTimeManager{});
+
+        SimTimeManager::incrDay(std::chrono::days{30});
+        SimTimeManager::updateAll();
+        CHECK(savings.getBalance() == startingBalance * 1.05);
+    }
 }
 
 TEST_CASE("Service charge tests", "[account]") {
-    // TODO
+    SimTimeManager::resetDay();
+    constexpr auto startingBalance = 100'000_dollars;
+    constexpr auto serviceCharge = 10_dollars;
+
+    const InterestHandler noInterestHandler(InterestType::Daily, 0.00);
+    ServiceChargeCheckingAccount sc_checking("sc_checking", startingBalance, noInterestHandler, serviceCharge, SimTimeManager{});
+
+    SECTION("Initial balance and service charge") {
+        CHECK(sc_checking.getBalance() == startingBalance);
+        CHECK(sc_checking.getServiceCharge() == serviceCharge);
+    }
+
+    SECTION("Service charge deduction") {
+        CHECK(sc_checking.getBalance() == startingBalance - serviceCharge);
+    }
 }
 
 TEST_CASE("Monthly records tests", "[account]") {
