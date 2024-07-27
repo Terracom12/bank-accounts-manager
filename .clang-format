@@ -19,6 +19,6 @@ IndentWidth: 4
 IndentAccessModifiers: false
 AccessModifierOffset: -4
 
-ColumnLimit: 80
+ColumnLimit: 120
 
 AllowShortFunctionsOnASingleLine: Inline

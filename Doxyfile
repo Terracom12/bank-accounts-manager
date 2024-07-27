@@ -1,0 +1,6 @@
+# Doxyfile 1.11.0
+
+PROJECT_NAME           = "Bank Accounts"
+OUTPUT_DIRECTORY       = ./docs
+INPUT                  = .
+RECURSIVE              = YES

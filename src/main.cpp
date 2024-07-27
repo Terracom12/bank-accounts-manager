@@ -1,5 +1,9 @@
-#include <iostream>
+#include "console_interface.h"
 
 int main() {
-    std::cout << "Hello, world!\n";
+    ConsoleInterface cli{};
+
+    cli.run();
+
+    return 0;
 }

@@ -1,0 +1,20 @@
+name: main
+
+on: workflow_dispatch
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install requirements
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install cmake -qq
+
+      - name: Build
+        run: make all
+
+      - name: Test
+        run: cd build && ./bank_accounts_test

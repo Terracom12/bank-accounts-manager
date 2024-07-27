@@ -27,19 +27,21 @@ Checks: "*,\
   -misc-non-private-member-variables-in-classes,\
   -cert-dcl21-cpp,\
   -hicpp-member-init,\
-  -readability-identifier-naming" # Temporarily disabled while we decide on conventions
+  -hicpp-special-member-functions"
 WarningsAsErrors: ""
 CheckOptions:
   # Conventional use of `os` and `is` for std::ostream and std::istream stream operator overloads
   - key: "readability-identifier-length.IgnoredParameterNames"
-    value: "[(os)(is)]"
+    value: "[(os)(is)(id)]"
   # Allow small, recognizable integer values. Not EVERYTHING has to be a constant, especially in academia
   - key: "readability-magic-numbers.IgnoredIntegerValues"
-    value: "1;2;3;4;5;6;7;8;9;10;"
+    value: "1;2;3;4;5;6;7;8;9;10;100"
   # Qt headers are marked wrongly as "indirectly used", since they follow the
   # stdlib convention of adding extra headers without the h(pp) suffix
   - key: "misc-include-cleaner.IgnoreHeaders"
     value: "Q*"
+  - key: "cppcoreguidelines-special-member-functions.AllowSoleDefaultDtor"
+    value: "true"
   - key: "bugprone-argument-comment.StrictMode"
     value: "true"
   # Prefer using enum classes with 2 values for parameters instead of bools
@@ -122,7 +124,7 @@ CheckOptions:
   - key: "readability-identifier-naming.InlineNamespaceCase"
     value: "lower_case"
   - key: "readability-identifier-naming.LocalConstantCase"
-    value: "UPPER_CASE"
+    value: "camelBack"
   - key: "readability-identifier-naming.LocalConstantPointerCase"
     value: "camelBack"
   - key: "readability-identifier-naming.LocalPointerCase"
@@ -145,14 +147,14 @@ CheckOptions:
     value: "camelBack"
   - key: "readability-identifier-naming.PrivateMemberCase"
     value: "camelBack"
-  - key: "readability-identifier-naming.PrivateMemberPrefix"
-    value: "m_"
+  - key: "readability-identifier-naming.PrivateMemberSuffix"
+    value: "_"
   - key: "readability-identifier-naming.PrivateMethodCase"
     value: "camelBack"
   - key: "readability-identifier-naming.ProtectedMemberCase"
     value: "camelBack"
-  - key: "readability-identifier-naming.ProtectedMemberPrefix"
-    value: "m_"
+  - key: "readability-identifier-naming.ProtectedMemberSuffix"
+    value: "_"
   - key: "readability-identifier-naming.ProtectedMethodCase"
     value: "camelBack"
   - key: "readability-identifier-naming.PublicMemberCase"

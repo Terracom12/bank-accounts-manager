@@ -3,17 +3,15 @@
     "ignorePaths": [],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": [
-        "Struct"
-    ],
+    "words": [],
     "ignoreWords": [
         "NOLINT",
         "NOLINTBEGIN",
         "NOLINTEND",
         "NOLINTNEXTLINE",
-        "Wextra",
-        "Wshadow",
-        "Wuninitialized"
+        "Doxyfile",
+        "tparam",
+        "ctassert"
     ],
     "import": []
 }
