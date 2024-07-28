@@ -1,0 +1,17 @@
+name: Test
+
+on:
+  # push:
+  #   branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/workflows/build.yaml
+
+      - name: Test
+        run: cd build && ctest . # spell-checker: disable-line
