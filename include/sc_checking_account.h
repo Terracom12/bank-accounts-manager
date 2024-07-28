@@ -2,6 +2,7 @@
 
 #include "account_info.h"
 #include "bank_account.h"
+#include "checking_account.h"
 #include "money_type.h"
 #include "monthly_statement.h"
 #include "util/date_util.h"
@@ -49,3 +50,4 @@ ServiceChargeCheckingAccount::ServiceChargeCheckingAccount(std::string_view hold
 }
 
 static_assert(BankAccountConcept<ServiceChargeCheckingAccount>);
+static_assert(CheckingAccountConcept<ServiceChargeCheckingAccount>);

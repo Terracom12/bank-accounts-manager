@@ -13,6 +13,7 @@
 #include <fmt/core.h>
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>

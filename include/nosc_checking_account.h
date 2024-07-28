@@ -2,6 +2,7 @@
 
 #include "account_info.h"
 #include "bank_account.h"
+#include "checking_account.h"
 #include "interest_handler.h"
 #include "money_type.h"
 #include "util/date_util.h"
@@ -46,3 +47,4 @@ NoServiceChargeCheckingAccount::NoServiceChargeCheckingAccount(std::string_view 
 }
 
 static_assert(BankAccountConcept<NoServiceChargeCheckingAccount>);
+static_assert(CheckingAccountConcept<NoServiceChargeCheckingAccount>);

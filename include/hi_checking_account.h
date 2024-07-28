@@ -2,6 +2,7 @@
 
 #include "account_info.h"
 #include "bank_account.h"
+#include "checking_account.h"
 #include "interest_handler.h"
 #include "util/date_util.h"
 
@@ -48,3 +49,4 @@ HighInterestCheckingAccount::HighInterestCheckingAccount(std::string_view holder
 }
 
 static_assert(BankAccountConcept<HighInterestCheckingAccount>);
+static_assert(CheckingAccountConcept<HighInterestCheckingAccount>);

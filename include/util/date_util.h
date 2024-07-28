@@ -1,12 +1,13 @@
 #pragma once
 
-#include "fmt/core.h"
 #include "util.h"
-#include <cassert>
+
+#include <fmt/chrono.h>
+#include <fmt/core.h>
+#include <fmt/format.h>
+
 #include <chrono>
 #include <compare>
-#include <fmt/chrono.h>
-#include <fmt/format.h>
 #include <functional>
 #include <limits>
 #include <map>
@@ -43,11 +44,7 @@ public:
         : date_{} {}
 
     explicit Date(std::chrono::year_month_day date)
-        : date_{date} {
-        auto normalizedTime = std::chrono::sys_days{date};
-        util::ctassert(date_ == normalizedTime, "Invalid date!");
-        date_ = normalizedTime;
-    }
+        : date_{std::chrono::sys_days{date}} {}
     // explicit Date(int day, int month, int year)
     //     : Date(std::chrono::year_month_day{std::chrono::year{year},
     //                                        std::chrono::month{static_cast<unsigned int>(month)},

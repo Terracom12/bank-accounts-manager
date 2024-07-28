@@ -14,7 +14,7 @@ class Money
 {
 public:
     constexpr Money() = default;
-    constexpr Money(int dollars, int cents)
+    constexpr Money(int dollars, int cents) // NOLINT(*easily-swappable-parameters)
         : dollars_{static_cast<uint64_t>(dollars)}
         , cents_{static_cast<uint64_t>(cents)} {
         handleChange();
