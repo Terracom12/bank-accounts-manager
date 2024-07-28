@@ -23,7 +23,7 @@ public:
         : pimpl_(std::make_unique<Model<AccountType>>(account)) {}
 
     CheckingAccount(const CheckingAccount& other)
-        : pimpl_(other.pimpl_->clone()) {}
+        : pimpl_(dynamic_cast<Concept*>(other.pimpl_->clone().release())) {}
 
     CheckingAccount& operator=(const CheckingAccount& rhs) {
         if (&rhs == this) {
@@ -47,48 +47,22 @@ public:
     void writeCheck(const Money& amount) { pimpl_->writeCheck(amount); };
 
 private:
-    class Concept
+    class Concept : public virtual BankAccount::Concept
     {
     public:
-        virtual ~Concept() = default;
-        virtual std::unique_ptr<Concept> clone() = 0;
-
-        virtual std::string_view getAccountName() const = 0;
-        virtual int getAccountNumber() const = 0;
-        virtual Date getAccountOpeningDate() const = 0;
-        virtual Money getBalance() const = 0;
-        virtual const MonthlyStatement& getMonthlyStatement(const Date& when) const = 0;
-        virtual const std::vector<MonthlyStatement>& getAllMonthlyStatements() const = 0;
-        virtual void deposit(const Money& amount) = 0;
-        virtual void withdraw(const Money& amount) = 0;
         virtual void writeCheck(const Money& amount) = 0;
     };
 
     template <CheckingAccountConcept AccountType>
-    class Model : public Concept
+    class Model : public Concept, public BankAccount::Model<AccountType>
     {
     public:
         explicit Model(const AccountType& account)
-            : impl_(account) {}
-        ~Model() override = default;
-        std::unique_ptr<Concept> clone() override { return std::make_unique<Model>(*this); }
+            : BankAccount::Model<AccountType>(account) {}
 
-        std::string_view getAccountName() const override { return impl_.getAccountName(); };
-        int getAccountNumber() const override { return impl_.getAccountNumber(); };
-        Date getAccountOpeningDate() const override { return impl_.getAccountOpeningDate(); };
-        Money getBalance() const override { return impl_.getBalance(); };
-        const MonthlyStatement& getMonthlyStatement(const Date& when) const override {
-            return impl_.getMonthlyStatement(when);
-        };
-        const std::vector<MonthlyStatement>& getAllMonthlyStatements() const override {
-            return impl_.getAllMonthlyStatements();
-        };
-        void deposit(const Money& amount) override { impl_.deposit(amount); };
-        void withdraw(const Money& amount) override { impl_.withdraw(amount); };
-        void writeCheck(const Money& amount) override { impl_.writeCheck(amount); };
+        std::unique_ptr<BankAccount::Concept> clone() override { return std::make_unique<Model>(*this); };
 
-    private:
-        AccountType impl_;
+        void writeCheck(const Money& amount) override { BankAccount::Model<AccountType>::impl_.writeCheck(amount); };
     };
 
     std::unique_ptr<Concept> pimpl_;

@@ -9,7 +9,7 @@
 #include <vector>
 
 template <typename T>
-concept BankAccountConcept = std::copy_constructible<T> && requires(const T constAcc, T acc) {
+concept BankAccountConcept = std::copyable<T> && requires(const T constAcc, T acc) {
     { constAcc.getAccountName() } -> std::convertible_to<std::string_view>;
     { constAcc.getAccountNumber() } -> std::convertible_to<int>;
     { constAcc.getAccountOpeningDate() } -> std::convertible_to<Date>;
@@ -52,6 +52,8 @@ public:
     void deposit(const Money& amount) { pimpl_->deposit(amount); };
     void withdraw(const Money& amount) { pimpl_->withdraw(amount); };
 
+    friend class CheckingAccount;
+
 private:
     class Concept
     {
@@ -70,12 +72,11 @@ private:
     };
 
     template <BankAccountConcept AccountType>
-    class Model : public Concept
+    class Model : public virtual Concept
     {
     public:
         explicit Model(const AccountType& account)
             : impl_(account) {}
-        ~Model() override = default;
         std::unique_ptr<Concept> clone() override { return std::make_unique<Model>(*this); }
 
         std::string_view getAccountName() const override { return impl_.getAccountName(); };
@@ -91,8 +92,8 @@ private:
         void deposit(const Money& amount) override { impl_.deposit(amount); };
         void withdraw(const Money& amount) override { impl_.withdraw(amount); };
 
-    private:
-        AccountType impl_;
+    protected:
+        AccountType impl_; // NOLINT
     };
 
     std::unique_ptr<Concept> pimpl_;
