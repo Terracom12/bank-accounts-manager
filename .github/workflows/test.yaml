@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/workflows/build.yaml
+      - uses: ./.github/actions/build
 
       - name: Test
         run: cd build && ctest . # spell-checker: disable-line
