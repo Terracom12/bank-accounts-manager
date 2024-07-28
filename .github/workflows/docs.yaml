@@ -1,0 +1,61 @@
+name: Docs
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Install Requirements
+        run: |
+          sudo apt update -y
+          sudo apt-get install \
+              doxygen \
+              graphviz \
+              texlive-base \
+              texlive-latex-extra \
+              texlive-fonts-extra \
+              texlive-fonts-recommended -y
+          sudo pip3 install jinja2 Pygments --no-input
+
+      - name: Setup External Libraries and Compile Commands
+        uses: ./.github/actions/setup
+        with:
+          only-compile-commands: "true"
+
+      # - name: Clone m.css
+      #   run: |
+      #     git clone https://github.com/mosra/m.css m.css
+
+      - name: Build Docs
+        run: |
+          doxygen Doxyfile
+        # python ./m.css/documentation/doxygen.py Doxyfile-mcss
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./docs/html
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
