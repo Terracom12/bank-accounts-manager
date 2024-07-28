@@ -38,7 +38,7 @@ jobs:
 
       - name: Build Docs
         run: |
-          doxygen Doxyfile
+          doxygen Doxyfile-uml
         # python ./m.css/documentation/doxygen.py Doxyfile-mcss
 
       - name: Setup Pages
