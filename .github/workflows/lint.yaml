@@ -15,7 +15,7 @@ jobs:
 
       - uses: ./.github/actions/setup
         with:
-          only-compile-commands: true
+          only-compile-commands: "true"
 
       - uses: Terracom12/cpp-linter-action@main # spell-checker: disable-line
         id: linter

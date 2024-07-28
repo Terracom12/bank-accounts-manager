@@ -6,7 +6,7 @@ inputs:
   only-compile-commands:
     description: Simulate a build for the sole purpose of generating a compilation database
     required: false
-    default: "true"
+    default: "false"
 
 runs:
   using: "composite"
@@ -22,8 +22,9 @@ runs:
     - name: Build
       shell: bash
       run: |
+        echo ${{inputs.only-compile-commands}}
         cmake -S . -B build -DCMAKE_EXPORT_COMPILE_COMMANDS:BOOL:=TRUE -DCMAKE_BUILD_TYPE:STRING:=Release
-        if [[ {{inputs.only-compile-commands}} != true ]]; then \
+        if [[ ${{inputs.only-compile-commands}} != "true" ]]; then \
           cmake --build build --config Release; \
         fi
         cp build/compile_commands.json .
