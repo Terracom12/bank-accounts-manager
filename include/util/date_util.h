@@ -135,7 +135,10 @@ public:
         date_ = Date{std::chrono::sys_days{date_.get()} + amt};
     }
 
-    static void resetDay() { date_ = Date{::today()}; }
+    static void resetDay() {
+        date_ = Date{::today()};
+        lastUpdate_ = date_;
+    }
 
     friend class TimeManagerResource;
 
