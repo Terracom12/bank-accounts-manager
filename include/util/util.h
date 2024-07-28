@@ -7,6 +7,8 @@
 #include <stdexcept>
 #include <type_traits>
 
+// NOLINTBEGIN(*pointer-arithmetic)
+
 namespace util {
 
 constexpr void ctassert(bool expr, const char* str) {
@@ -15,7 +17,6 @@ constexpr void ctassert(bool expr, const char* str) {
     }
 }
 
-// NOLINTBEGIN(*pointer-arithmetic)
 constexpr int strlen(const char* str) {
     int len = 0;
 
@@ -27,15 +28,16 @@ constexpr int strlen(const char* str) {
     return len;
 }
 
+// NOLINTNEXTLINE(*identifier-naming)
 constexpr bool is_space(char chr) {
     return chr == ' ' || chr == '\n' || chr == '\r' || chr == '\t';
 }
 
+// NOLINTNEXTLINE(*identifier-naming)
 constexpr bool is_digit(char chr) {
     return chr >= '0' && chr <= '9';
 }
 
-// NOLINTBEGIN(*pointer-arithmetic)
 constexpr int atoi(const char* str) {
     while (is_space(*str)) {
         str++;

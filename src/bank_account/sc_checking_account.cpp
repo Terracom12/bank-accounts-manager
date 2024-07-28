@@ -6,6 +6,16 @@ ServiceChargeCheckingAccount::ServiceChargeCheckingAccount(const ServiceChargeCh
     : AccountInfo(other)
     , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
 
+ServiceChargeCheckingAccount& ServiceChargeCheckingAccount::operator=(const ServiceChargeCheckingAccount& rhs) {
+    if (&rhs == this) {
+        return *this;
+    }
+
+    ServiceChargeCheckingAccount copy{rhs};
+    *this = std::move(copy);
+    return *this;
+}
+
 void ServiceChargeCheckingAccount::deposit(Money amt) {
     balance_ += amt;
 

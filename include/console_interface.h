@@ -13,8 +13,8 @@ private:
     enum class MainMenuOption { NewAccount, StepDays, SelectAccount, Quit };
     enum class AccountMenuOption { Close, DisplayStatement, Info, Deposit, Withdraw, Back };
 
-    MainMenuOption mainMenu() const;
-    AccountMenuOption accountMenu(const BankAccount& account) const;
+    static MainMenuOption mainMenu();
+    static AccountMenuOption accountMenu(const BankAccount& account);
 
     void handleAccountAction(AccountMenuOption opt, BankAccount& account);
     BankAccount* selectAccount();

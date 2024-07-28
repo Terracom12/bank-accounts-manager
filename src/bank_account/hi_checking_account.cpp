@@ -9,6 +9,16 @@ HighInterestCheckingAccount::HighInterestCheckingAccount(const HighInterestCheck
     , interestHandler_{other.interestHandler_}
     , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
 
+HighInterestCheckingAccount& HighInterestCheckingAccount::operator=(const HighInterestCheckingAccount& rhs) {
+    if (&rhs == this) {
+        return *this;
+    }
+
+    HighInterestCheckingAccount copy{rhs};
+    *this = std::move(copy);
+    return *this;
+}
+
 void HighInterestCheckingAccount::deposit(Money amount) {
     balance_ += amount;
 

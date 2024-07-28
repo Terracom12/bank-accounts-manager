@@ -15,6 +15,10 @@ class ServiceChargeCheckingAccount : public AccountInfo
 public:
     ServiceChargeCheckingAccount(std::string_view holderName, Money startingBalance, TimeManager auto timeManager = {});
     ServiceChargeCheckingAccount(const ServiceChargeCheckingAccount& other);
+    ServiceChargeCheckingAccount(ServiceChargeCheckingAccount&&) = default;
+    ServiceChargeCheckingAccount& operator=(const ServiceChargeCheckingAccount&);
+    ServiceChargeCheckingAccount& operator=(ServiceChargeCheckingAccount&&) = default;
+    ~ServiceChargeCheckingAccount() = default;
 
     void deposit(Money amt);
     void withdraw(Money amt);

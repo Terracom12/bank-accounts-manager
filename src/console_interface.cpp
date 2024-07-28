@@ -17,7 +17,6 @@
 #include <cstdlib>
 #include <iostream>
 #include <iterator>
-#include <memory>
 #include <optional>
 #include <random>
 #include <stdexcept>
@@ -107,17 +106,13 @@ void ConsoleInterface::run() {
 
 // enum class MainMenuOption { NewAccount, StepDays, SelectAccount, Quit };
 
-ConsoleInterface::MainMenuOption ConsoleInterface::mainMenu() const {
+ConsoleInterface::MainMenuOption ConsoleInterface::mainMenu() {
     bool selectionValid = false;
     std::optional<int> selection;
 
     while (!selectionValid) {
-        std::cout << "Please select an option:"
-                  << "\n\t1) New Account"
-                  << "\n\t2) Simulate Time"
-                  << "\n\t3) Account Actions"
-                  << "\n\t4) Quit"
-                  << "\n[1-4]: ";
+        std::cout << "Please select an option:" << "\n\t1) New Account" << "\n\t2) Simulate Time"
+                  << "\n\t3) Account Actions" << "\n\t4) Quit" << "\n[1-4]: ";
 
         selection = getIntInput();
         auto inRangeFn = [](int val) { return val > 0 && val < 5; };
@@ -135,17 +130,13 @@ ConsoleInterface::MainMenuOption ConsoleInterface::mainMenu() const {
 
 // enum class AccountMenuOption { Close, DisplayStatement, Info, Deposit, Withdraw, Back };
 
-ConsoleInterface::AccountMenuOption ConsoleInterface::accountMenu(const BankAccount& account) const {
+ConsoleInterface::AccountMenuOption ConsoleInterface::accountMenu(const BankAccount& account) {
     // TODO: Refactor duplicate code in other menu function
     std::optional<int> selection;
 
     std::cout << fmt::format("Please select an option for account {}:", account.getAccountNumber())
-              << "\n\t1) Close Account"
-              << "\n\t2) Display Statements"
-              << "\n\t3) Account Info"
-              << "\n\t4) Deposit Funds"
-              << "\n\t5) Withdraw Funds"
-              << "\n[1-5, or any other value to go back]: ";
+              << "\n\t1) Close Account" << "\n\t2) Display Statements" << "\n\t3) Account Info"
+              << "\n\t4) Deposit Funds" << "\n\t5) Withdraw Funds" << "\n[1-5, or any other value to go back]: ";
 
     selection = getIntInput();
     auto inRangeFn = [](int val) { return val > 0 && val < 6; };
@@ -239,14 +230,9 @@ BankAccount* ConsoleInterface::selectAccount() {
 }
 
 void ConsoleInterface::newAccount() {
-    std::cout << "Please select account type:"
-              << "\n\t1) Certificate of Deposit"
-              << "\n\t2) No Service Charge Checking"
-              << "\n\t3) Service Charge Checking"
-              << "\n\t4) High Interest Checking"
-              << "\n\t5) Savings"
-              << "\n\t6) High Interest Savings"
-              << "\n[1-5, or any other number to go back]: ";
+    std::cout << "Please select account type:" << "\n\t1) Certificate of Deposit" << "\n\t2) No Service Charge Checking"
+              << "\n\t3) Service Charge Checking" << "\n\t4) High Interest Checking" << "\n\t5) Savings"
+              << "\n\t6) High Interest Savings" << "\n[1-5, or any other number to go back]: ";
 
     auto selection = getIntInput();
     auto inRangeFn = [](int val) { return val > 0 && val < 7; };
@@ -256,12 +242,13 @@ void ConsoleInterface::newAccount() {
         return;
     }
 
-    constexpr auto startingBalance = 15'000.00_dollars;
-    constexpr auto maturityMonths = std::chrono::months{6};
-    constexpr auto withdrawalPenalty = 0.2;
-    InterestHandler defaultInterest(InterestType::Monthly, 0.05);
-    constexpr std::array<std::string_view, 5> holderNames = {"Bob Joe II", "William Bill", "King Edward", "Darth Vader",
-                                                             "Aragorn"};
+    auto startingBalance = 15'000.00_dollars;
+    auto maturityMonths = std::chrono::months{6};
+    constexpr auto WITHDRAWAL_PENALTY = 0.2;
+    constexpr auto INTEREST_RATE = 0.05;
+    InterestHandler defaultInterest(InterestType::Monthly, INTEREST_RATE);
+    std::array<std::string_view, 5> holderNames = {"Bob Joe II", "William Bill", "King Edward", "Darth Vader",
+                                                   "Aragorn"};
     std::string name{[&] {
         std::uniform_int_distribution<> distr(0, holderNames.size() - 1);
         std::mt19937 gen{std::random_device{}()};
@@ -270,8 +257,8 @@ void ConsoleInterface::newAccount() {
 
     switch (selection.value()) {
     case 1:
-        openAccounts_.emplace_back(CertificateOfDepositAccount(name, startingBalance, maturityMonths, withdrawalPenalty,
-                                                               defaultInterest, SimTimeManager{}));
+        openAccounts_.emplace_back(CertificateOfDepositAccount(name, startingBalance, maturityMonths,
+                                                               WITHDRAWAL_PENALTY, defaultInterest, SimTimeManager{}));
         break;
     case 2:
         openAccounts_.emplace_back(

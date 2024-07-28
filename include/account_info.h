@@ -30,7 +30,7 @@ protected:
 
 private:
     // Declared as static function to ensure thread safety
-    static int getCurrentAccountNum();
+    static int generateNextAccountNum();
 
     template <typename SelfT>
         requires std::is_same_v<AccountInfo, std::remove_const_t<SelfT>>

@@ -15,6 +15,10 @@ public:
     HighInterestSavingsAccount(std::string_view holderName, Money startingBalance,
                                const InterestHandler& interestHandler, TimeManager auto timeManager = {});
     HighInterestSavingsAccount(const HighInterestSavingsAccount& other);
+    HighInterestSavingsAccount(HighInterestSavingsAccount&&) = default;
+    HighInterestSavingsAccount& operator=(const HighInterestSavingsAccount&);
+    HighInterestSavingsAccount& operator=(HighInterestSavingsAccount&&) = default;
+    ~HighInterestSavingsAccount() = default;
 
     void deposit(Money amount);
     void withdraw(Money amount);

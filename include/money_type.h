@@ -78,7 +78,9 @@ private:
     std::uint64_t cents_ = 0;
 };
 
+// TODO: Refactor
 constexpr Money operator""_dollars(const char* str) {
+    // NOLINTBEGIN
     auto dollars = util::atoi(str);
 
     const char* decPoint = std::find(str, str + util::strlen(str), '.');
@@ -94,6 +96,7 @@ constexpr Money operator""_dollars(const char* str) {
     }
 
     return Money{dollars, cents};
+    // NOLINTEND
 }
 // NOLINTNEXTLINE(google-runtime-int)
 constexpr Money operator""_dollars(unsigned long long amount) {
@@ -109,12 +112,10 @@ constexpr Money operator""_cents(unsigned long long amount) {
 }
 
 template <>
-struct fmt::formatter<Money> : fmt::formatter<std::string>
+struct fmt::formatter<Money> : formatter<std::string>
 {
     template <class FmtContext>
-    FmtContext::iterator format(Money s, FmtContext& ctx) const {
-        return fmt::formatter<std::string>::format(std::string{s}, ctx);
+    FmtContext::iterator format(Money amt, FmtContext& ctx) const {
+        return fmt::formatter<std::string>::format(std::string{amt}, ctx);
     }
 };
-
-// TODO: Consider overloading ostream operator as std::print is unsupported

@@ -11,6 +11,10 @@ public:
     SavingsAccount(std::string_view holderName, Money startingBalance, const InterestHandler& interestHandler,
                    TimeManager auto timeManager = {});
     SavingsAccount(const SavingsAccount& other);
+    SavingsAccount(SavingsAccount&&) = default;
+    SavingsAccount& operator=(const SavingsAccount&);
+    SavingsAccount& operator=(SavingsAccount&&) = default;
+    ~SavingsAccount() = default;
 
     void deposit(Money amount);
     void withdraw(Money amount);

@@ -44,9 +44,9 @@ public:
 
     explicit Date(std::chrono::year_month_day date)
         : date_{date} {
-        const auto normalized_time = std::chrono::sys_days{date};
-        util::ctassert(date_ == normalized_time, "Invalid date!");
-        date_ = normalized_time;
+        auto normalizedTime = std::chrono::sys_days{date};
+        util::ctassert(date_ == normalizedTime, "Invalid date!");
+        date_ = normalizedTime;
     }
     // explicit Date(int day, int month, int year)
     //     : Date(std::chrono::year_month_day{std::chrono::year{year},
@@ -187,22 +187,23 @@ public:
     using CallbackType = std::function<void(DatePeriod)>;
 
     template <TimeManager TimeMngT>
-    TimeManagerResource(TimeMngT /*manager*/, const CallbackType& updateCallback)
+    TimeManagerResource(TimeMngT /*manager*/, CallbackType updateCallback)
         : getDateFn_{[] { return TimeMngT::getDate(); }}
         , registerFn_{TimeMngT::registerFn}
         , deregisterFn_{TimeMngT::deregisterFn}
-        , callbackFn_{updateCallback} {
+        , callbackFn_{std::move(updateCallback)} {
         registerHelper();
     }
 
     TimeManagerResource(TimeManagerResource&& other) = default;
+    TimeManagerResource& operator=(const TimeManagerResource&) = delete;
     TimeManagerResource& operator=(TimeManagerResource&& rhs) noexcept {
         if (id_ >= 0) {
             deregisterFn_(id_);
             id_ = -1;
         }
 
-        std::swap(*this, rhs);
+        swap(*this, rhs);
         return *this;
     }
     ~TimeManagerResource() {

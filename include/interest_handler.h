@@ -23,19 +23,19 @@ private:
     InterestType compoundingPeriod_;
     double rate_;
 
-    Date lastPayment_{};
+    Date lastPayment_;
 };
 
 template <>
 struct fmt::formatter<InterestType> : formatter<std::string_view>
 {
     template <class FmtContext>
-    FmtContext::iterator format(InterestType s, FmtContext& ctx) const {
+    FmtContext::iterator format(InterestType interest, FmtContext& ctx) const {
         using enum InterestType;
 
         std::string_view str{};
 
-        switch (s) {
+        switch (interest) {
         case Daily:
             str = "Daily";
             break;

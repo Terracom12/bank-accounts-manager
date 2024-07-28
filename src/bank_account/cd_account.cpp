@@ -11,6 +11,16 @@ CertificateOfDepositAccount::CertificateOfDepositAccount(const CertificateOfDepo
     , lastInterestPayment_{other.lastInterestPayment_}
     , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
 
+CertificateOfDepositAccount& CertificateOfDepositAccount::operator=(const CertificateOfDepositAccount& rhs) {
+    if (&rhs == this) {
+        return *this;
+    }
+
+    CertificateOfDepositAccount copy{rhs};
+    *this = std::move(copy);
+    return *this;
+}
+
 void CertificateOfDepositAccount::update(DatePeriod period) {
     addStatementsThrough(period.end);
     if (isMature_) {

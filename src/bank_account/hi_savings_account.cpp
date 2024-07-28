@@ -8,11 +8,16 @@
 HighInterestSavingsAccount::HighInterestSavingsAccount(const HighInterestSavingsAccount& other)
     : AccountInfo(other)
     , interestHandler_{other.interestHandler_}
-    , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {
-    addToMonthlyStatement(timeManager_.getDate(), {.details = "Account opened",
-                                                   .balanceChange = getBalance(),
-                                                   .changeType = StatementRecordInfo::None,
-                                                   .resultantBalance = getBalance()});
+    , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
+
+HighInterestSavingsAccount& HighInterestSavingsAccount::operator=(const HighInterestSavingsAccount& rhs) {
+    if (&rhs == this) {
+        return *this;
+    }
+
+    HighInterestSavingsAccount copy{rhs};
+    *this = std::move(copy);
+    return *this;
 }
 
 void HighInterestSavingsAccount::deposit(Money amount) {

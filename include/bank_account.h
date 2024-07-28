@@ -4,7 +4,6 @@
 #include "monthly_statement.h"
 #include "util/date_util.h"
 
-#include <concepts>
 #include <memory>
 #include <string_view>
 #include <vector>
@@ -50,8 +49,8 @@ public:
     Money getBalance() const { return pimpl_->getBalance(); };
     const MonthlyStatement& getMonthlyStatement(const Date& when) const { return pimpl_->getMonthlyStatement(when); };
     const std::vector<MonthlyStatement>& getAllMonthlyStatements() const { return pimpl_->getAllMonthlyStatements(); };
-    void deposit(const Money& amount) { return pimpl_->deposit(amount); };
-    void withdraw(const Money& amount) { return pimpl_->withdraw(amount); };
+    void deposit(const Money& amount) { pimpl_->deposit(amount); };
+    void withdraw(const Money& amount) { pimpl_->withdraw(amount); };
 
 private:
     class Concept
@@ -89,8 +88,8 @@ private:
         const std::vector<MonthlyStatement>& getAllMonthlyStatements() const override {
             return impl_.getAllMonthlyStatements();
         };
-        void deposit(const Money& amount) override { return impl_.deposit(amount); };
-        void withdraw(const Money& amount) override { return impl_.withdraw(amount); };
+        void deposit(const Money& amount) override { impl_.deposit(amount); };
+        void withdraw(const Money& amount) override { impl_.withdraw(amount); };
 
     private:
         AccountType impl_;

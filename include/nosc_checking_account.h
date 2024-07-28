@@ -14,6 +14,10 @@ public:
     NoServiceChargeCheckingAccount(std::string_view holderName, Money startingBalance,
                                    const InterestHandler& interestHandler, TimeManager auto timeManager = {});
     NoServiceChargeCheckingAccount(const NoServiceChargeCheckingAccount& other);
+    NoServiceChargeCheckingAccount(NoServiceChargeCheckingAccount&&) = default;
+    NoServiceChargeCheckingAccount& operator=(const NoServiceChargeCheckingAccount&);
+    NoServiceChargeCheckingAccount& operator=(NoServiceChargeCheckingAccount&&) = default;
+    ~NoServiceChargeCheckingAccount() = default;
 
     void deposit(Money amount);
     void withdraw(Money amount);

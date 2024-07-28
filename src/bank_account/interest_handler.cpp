@@ -38,8 +38,8 @@ void InterestHandler::tryProcessOn(Date day, const std::function<void(Date, doub
         return;
 
     case Quarterly:
-        using quarterly = std::chrono::duration<int, std::ratio_multiply<std::ratio<3>, std::chrono::months::period>>;
-        if (Date::diff<quarterly>(lastPayment_, day) > 0) {
+        using QuarterlyT = std::chrono::duration<int, std::ratio_multiply<std::ratio<3>, std::chrono::months::period>>;
+        if (Date::diff<QuarterlyT>(lastPayment_, day) > 0) {
             lastPayment_ = day;
             interestPayoutFn(day, rate_);
             break;

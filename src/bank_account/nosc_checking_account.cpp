@@ -7,6 +7,16 @@ NoServiceChargeCheckingAccount::NoServiceChargeCheckingAccount(const NoServiceCh
     , interestHandler_{other.interestHandler_}
     , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
 
+NoServiceChargeCheckingAccount& NoServiceChargeCheckingAccount::operator=(const NoServiceChargeCheckingAccount& rhs) {
+    if (&rhs == this) {
+        return *this;
+    }
+
+    NoServiceChargeCheckingAccount copy{rhs};
+    *this = std::move(copy);
+    return *this;
+}
+
 void NoServiceChargeCheckingAccount::deposit(Money amount) {
     balance_ += amount;
 

@@ -1,14 +1,12 @@
 #include "account_info.h"
 #include "monthly_statement.h"
 
-#include <algorithm>
 #include <cstddef>
-#include <utility>
 
 AccountInfo::AccountInfo(std::string_view holderName, Money startingBalance, Date openingDate)
     : balance_(startingBalance)
     , holderName_(holderName)
-    , number_(getAccountNumber())
+    , number_(generateNextAccountNum())
     , openingDate_(openingDate) {}
 
 const MonthlyStatement& AccountInfo::getMonthlyStatement(Date when) const {
@@ -48,10 +46,10 @@ void AccountInfo::addStatementsThrough(Date when) {
 }
 void AccountInfo::addToMonthlyStatement(Date when, StatementRecordInfo info) {
     addStatementsThrough(when);
-    getStatementHelper(*this, when).records.emplace(when, info);
+    getStatementHelper(*this, when).records.emplace(when, std::move(info));
 }
 
-int AccountInfo::getCurrentAccountNum() {
+int AccountInfo::generateNextAccountNum() {
     static int number = 0;
 
     return number++;

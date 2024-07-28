@@ -6,6 +6,16 @@ SavingsAccount::SavingsAccount(const SavingsAccount& other)
     , interestHandler_{other.interestHandler_}
     , timeManager_(other.timeManager_.clone([this](DatePeriod period) { update(period); })) {}
 
+SavingsAccount& SavingsAccount::operator=(const SavingsAccount& rhs) {
+    if (&rhs == this) {
+        return *this;
+    }
+
+    SavingsAccount copy{rhs};
+    *this = std::move(copy);
+    return *this;
+}
+
 void SavingsAccount::deposit(Money amount) {
     balance_ += amount;
 

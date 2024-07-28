@@ -23,6 +23,10 @@ public:
                                 std::chrono::months numMaturityMonths, double earlyWithdrawalPenalty,
                                 const InterestHandler& interestHandler, TimeManager auto timeManager = {});
     CertificateOfDepositAccount(const CertificateOfDepositAccount& other);
+    CertificateOfDepositAccount(CertificateOfDepositAccount&&) = default;
+    CertificateOfDepositAccount& operator=(const CertificateOfDepositAccount&);
+    CertificateOfDepositAccount& operator=(CertificateOfDepositAccount&&) = default;
+    ~CertificateOfDepositAccount() = default;
 
     /**
      * @brief Deposits on a CD are disallowed. Any call to this function is a no-op.
