@@ -38,6 +38,7 @@ jobs:
 
       - name: Build Docs
         run: |
+          mkdir -p docs/uml
           doxygen Doxyfile-uml
         # python ./m.css/documentation/doxygen.py Doxyfile-mcss
 
@@ -46,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./docs/html
+          path: ./docs/uml
 
   deploy:
     environment:
