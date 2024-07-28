@@ -13,11 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/build
+      - uses: ./.github/actions/setup
         with:
           only-compile-commands: true
 
-      - uses: Terracom12/cpp-linter-action@main
+      - uses: Terracom12/cpp-linter-action@main # spell-checker: disable-line
         id: linter
         continue-on-error: true
         env:
