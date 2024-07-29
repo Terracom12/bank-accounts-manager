@@ -10,4 +10,4 @@ This is the repository for the CS1C project with saddleback college with profess
 
 Licensed through the [Unlicense](./UNLICENSE)
 
-Group Members: Matthew Reese, Nathaniel Tran, Kevin Kim, Pukar Sitaula, Chloe Boyne ...
+Group Members: Matthew Reese, Nathaniel Tran, Kevin Kim, Pukar Sitaula, Chloe Boyne, & Kaveh Malekzadeh
