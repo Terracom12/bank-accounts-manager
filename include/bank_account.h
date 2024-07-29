@@ -1,3 +1,9 @@
+/*! \file bank_account.h
+    \brief File containing the BankAccount class and template
+
+    The BankAccount class and its nested classes, Concept and Model, as well as the BankAccountConcept
+    are declared within this header file.
+*/
 #pragma once
 
 #include "money_type.h"
@@ -8,6 +14,11 @@
 #include <string_view>
 #include <vector>
 
+//! BankAccountConcept
+/*!
+  This concept constrains account types requiring that it has declared copy/move operations,
+  and that each function signature and return type is as expected
+*/
 template <typename T>
 concept BankAccountConcept = std::copyable<T> && requires(const T constAcc, T acc) {
     { constAcc.getAccountName() } -> std::convertible_to<std::string_view>;
@@ -21,6 +32,10 @@ concept BankAccountConcept = std::copyable<T> && requires(const T constAcc, T ac
     { acc.withdraw(Money{}) } -> std::same_as<void>;
 };
 
+//! BankAccount class
+/*!
+  The base class delegates all actions to underlying accounts via a polymorphic reference to Concept
+*/
 class BankAccount
 {
 public:
@@ -55,6 +70,10 @@ public:
     friend class CheckingAccount;
 
 private:
+//! Concept class
+/*!
+  An abstract class nested within BankAccount declaring pure virtual versions of functions in BankAccount
+*/
     class Concept
     {
     public:
@@ -71,6 +90,11 @@ private:
         virtual void withdraw(const Money& amount) = 0;
     };
 
+//! Model Class Template
+/*!
+  This class is also nested within BankAccount and overrides the virtual functions of Concept, 
+  adapting to account types with the specified type-requirements
+*/
     template <BankAccountConcept AccountType>
     class Model : public virtual Concept
     {
