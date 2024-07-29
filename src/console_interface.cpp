@@ -105,15 +105,17 @@ void ConsoleInterface::run() {
     }
 }
 
-// enum class MainMenuOption { NewAccount, StepDays, SelectAccount, Quit };
-
 ConsoleInterface::MainMenuOption ConsoleInterface::mainMenu() {
     bool selectionValid = false;
     std::optional<int> selection;
 
     while (!selectionValid) {
-        std::cout << "Please select an option:" << "\n\t1) New Account" << "\n\t2) Simulate Time"
-                  << "\n\t3) Account Actions" << "\n\t4) Quit" << "\n[1-4]: ";
+        std::cout << "Please select an option:"
+                  << "\n\t1) New Account"
+                  << "\n\t2) Simulate Time"
+                  << "\n\t3) Account Actions"
+                  << "\n\t4) Quit"
+                  << "\n[1-4]: ";
 
         selection = getIntInput();
         auto inRangeFn = [](int val) { return val > 0 && val < 5; };
@@ -126,18 +128,21 @@ ConsoleInterface::MainMenuOption ConsoleInterface::mainMenu() {
         selectionValid = true;
     }
 
-    return static_cast<MainMenuOption>(selection.value() - 1); // NOLINT
+    // Clang-tidy can't analyze the check in the loop
+    // NOLINTNEXTLINE(*unchecked-optional-access)
+    return static_cast<MainMenuOption>(selection.value() - 1);
 }
 
-// enum class AccountMenuOption { Close, DisplayStatement, Info, Deposit, Withdraw, Back };
-
 ConsoleInterface::AccountMenuOption ConsoleInterface::accountMenu(const BankAccount& account) {
-    // TODO: Refactor duplicate code in other menu function
     std::optional<int> selection;
 
     std::cout << fmt::format("Please select an option for account {}:", account.getAccountNumber())
-              << "\n\t1) Close Account" << "\n\t2) Display Statements" << "\n\t3) Account Info"
-              << "\n\t4) Deposit Funds" << "\n\t5) Withdraw Funds" << "\n[1-5, or any other value to go back]: ";
+              << "\n\t1) Close Account"
+              << "\n\t2) Display Statements"
+              << "\n\t3) Account Info"
+              << "\n\t4) Deposit Funds"
+              << "\n\t5) Withdraw Funds"
+              << "\n[1-5, or any other value to go back]: ";
 
     selection = getIntInput();
     auto inRangeFn = [](int val) { return val > 0 && val < 6; };
@@ -231,9 +236,14 @@ BankAccount* ConsoleInterface::selectAccount() {
 }
 
 void ConsoleInterface::newAccount() {
-    std::cout << "Please select account type:" << "\n\t1) Certificate of Deposit" << "\n\t2) No Service Charge Checking"
-              << "\n\t3) Service Charge Checking" << "\n\t4) High Interest Checking" << "\n\t5) Savings"
-              << "\n\t6) High Interest Savings" << "\n[1-5, or any other number to go back]: ";
+    std::cout << "Please select account type:"
+              << "\n\t1) Certificate of Deposit"
+              << "\n\t2) No Service Charge Checking"
+              << "\n\t3) Service Charge Checking"
+              << "\n\t4) High Interest Checking"
+              << "\n\t5) Savings"
+              << "\n\t6) High Interest Savings"
+              << "\n[1-6, or any other number to go back]: ";
 
     auto selection = getIntInput();
     auto inRangeFn = [](int val) { return val > 0 && val < 7; };

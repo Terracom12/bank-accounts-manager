@@ -9,8 +9,6 @@
 
 #include <string_view>
 
-// TODO: Deregister from time manager
-
 class ServiceChargeCheckingAccount : public AccountInfo
 {
 public:

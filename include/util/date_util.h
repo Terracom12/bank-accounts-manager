@@ -83,7 +83,6 @@ struct DatePeriod
     Date end;
 };
 
-// TODO: Move to custom formatters file
 template <>
 struct fmt::formatter<Date> : formatter<std::chrono::sys_days>
 {
@@ -92,19 +91,10 @@ struct fmt::formatter<Date> : formatter<std::chrono::sys_days>
     }
 };
 
-class RealTimeManager
-{
-public:
-    static Date getDate() {
-        const auto now = std::chrono::system_clock::now();
+namespace detail {
 
-        return Date{std::chrono::floor<std::chrono::days>(now)};
-    }
-
-    friend class TimeManagerResource;
-};
-
-class SimTimeManager
+template <typename>
+class Registry
 {
 public:
     using CallbackType = std::function<void(DatePeriod)>;
@@ -115,29 +105,17 @@ public:
         util::ctassert(result.second, "Attempting to register with multiple of the same id");
         return id;
     }
+
     static void deregisterFn(int id) {
         auto result = callbacks_.erase(id);
         util::ctassert(result != 0, "Failed to erase registered function");
     }
-    static void updateAll() {
-        for (const auto& [_, func] : callbacks_) {
-            func(DatePeriod{lastUpdate_, date_});
+
+    static void updateAll(const std::function<void(int, const CallbackType&)>& func) {
+        for (const auto& [id, callback] : callbacks_) {
+            func(id, callback);
         }
-
-        lastUpdate_ = date_;
     }
-    static Date getDate() { return date_; }
-
-    static void incrDay(std::chrono::days amt = std::chrono::days{1}) {
-        date_ = Date{std::chrono::sys_days{date_.get()} + amt};
-    }
-
-    static void resetDay() {
-        date_ = Date{::today()};
-        lastUpdate_ = date_;
-    }
-
-    friend class TimeManagerResource;
 
 private:
     static int makeUniqueId() {
@@ -154,9 +132,62 @@ private:
         return val + 1;
     }
 
-    inline static Date date_{::today()};                  // NOLINT
-    inline static Date lastUpdate_{date_};                // NOLINT
     inline static std::map<int, CallbackType> callbacks_; // NOLINT
+};
+
+} // namespace detail
+
+class RealTimeManager : public detail::Registry<RealTimeManager>
+{
+public:
+    static void updateAll() {
+        auto date = getDate();
+        detail::Registry<RealTimeManager>::updateAll([&](int /*id*/, auto& callback) {
+            callback(DatePeriod{lastUpdate_, date});
+        });
+
+        lastUpdate_ = date;
+    }
+
+    static Date getDate() {
+        const auto now = std::chrono::system_clock::now();
+
+        return Date{std::chrono::floor<std::chrono::days>(now)};
+    }
+
+    friend class TimeManagerResource;
+
+private:
+    inline static Date lastUpdate_{getDate()}; // NOLINT
+};
+
+class SimTimeManager : public detail::Registry<SimTimeManager>
+{
+public:
+    static void updateAll() {
+        detail::Registry<SimTimeManager>::updateAll([](int /*id*/, auto& callback) {
+            callback(DatePeriod{lastUpdate_, date_});
+        });
+
+        lastUpdate_ = date_;
+    }
+
+    static Date getDate() { return date_; }
+
+    static void incrDay(std::chrono::days amt = std::chrono::days{1}) {
+        date_ = Date{std::chrono::sys_days{date_.get()} + amt};
+    }
+
+    static void resetDay() {
+        date_ = Date{::today()};
+        lastUpdate_ = date_;
+    }
+
+    friend class TimeManagerResource;
+
+private:
+    inline static Date date_{::today()};   // NOLINT
+    inline static Date lastUpdate_{date_}; // NOLINT
 };
 
 /**
@@ -177,8 +208,7 @@ concept TimeManager = std::is_empty_v<T> && requires {
     { T::getDate() } -> std::same_as<Date>;
 };
 
-// TODO
-// static_assert(TimeManager<RealTimeManager>);
+static_assert(TimeManager<RealTimeManager>);
 static_assert(TimeManager<SimTimeManager>);
 
 class TimeManagerResource

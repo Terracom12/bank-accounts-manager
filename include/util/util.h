@@ -2,9 +2,15 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
+#include <algorithm>
+#include <array>
 #include <cstdint>
+#include <iterator>
 #include <limits>
 #include <stdexcept>
+#include <string>
 #include <type_traits>
 
 // NOLINTBEGIN(*pointer-arithmetic)
@@ -96,5 +102,35 @@ static_assert(std::is_same_v<retain_const_t<const int, char>, const char>);
 static_assert(std::is_same_v<retain_const_t<int, char>, char>);
 static_assert(std::is_same_v<retain_const_t<const int, char&>, const char&>);
 static_assert(std::is_same_v<retain_const_t<int, char&>, char&>);
+
+template <std::integral IntType>
+struct CommaSeperated
+{
+    const IntType& inner; // NOLINT
+};
+
+template <std::integral IntType>
+// NOLINTNEXTLINE(*identifier-naming)
+auto format_as(CommaSeperated<IntType> value) {
+    std::string result;
+    std::array<int, std::numeric_limits<IntType>::digits10> digits{};
+    int numDigits = 0;
+    for (auto val = value.inner; val > 0; val /= 10) {
+        digits[numDigits] = static_cast<int>(val % 10);
+        ++numDigits;
+    }
+
+    for (int i = 0; i < numDigits; ++i) {
+        char val = static_cast<char>('0' + digits[i]);
+
+        if (i != 0 && i % 3 == 0) {
+            result += std::string{","} + val;
+        }
+
+        result += std::string{val};
+    }
+    std::reverse(result.begin(), result.end());
+    return result;
+}
 
 } // namespace util

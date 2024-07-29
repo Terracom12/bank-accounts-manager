@@ -2,8 +2,6 @@
 #include "money_type.h"
 #include "util/date_util.h"
 
-// TODO: Try to reduce code duplication
-
 HighInterestCheckingAccount::HighInterestCheckingAccount(const HighInterestCheckingAccount& other)
     : AccountInfo(other)
     , interestHandler_{other.interestHandler_}

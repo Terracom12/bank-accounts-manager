@@ -20,5 +20,4 @@ out
 # Compilation database (for local editor config and CI)
 **/compile_commands.json
 
-# TODO: Include docs directory once config is finished
 docs/

@@ -21,7 +21,7 @@ TEST_CASE("Money test", "[money]") {
         constexpr std::array ZERO = {0_cents, 0_dollars, 0.00_dollars};
         constexpr std::array ONE_CENT = {1_cents, 0.01_dollars};
         constexpr std::array TWO_CENTS = {2_cents, 0.02_dollars};
-        // TODO
+
         CHECK_THAT(ZERO, AllEq(Money{0, 0}));
         CHECK_THAT(ONE_CENT, AllEq(Money{0, 1}));
         CHECK_THAT(TWO_CENTS, AllEq(Money{0, 2}));
@@ -51,8 +51,5 @@ TEST_CASE("Money test", "[money]") {
         CHECK_THROWS_AS(999'999'999'999'999'999'999'999'999'999.00_dollars, std::runtime_error);
     }
 
-    SECTION("overloaded operators") {
-        // TODO
-    }
+    SECTION("overloaded operators") {}
 }
-// TODO: Constexpr tests

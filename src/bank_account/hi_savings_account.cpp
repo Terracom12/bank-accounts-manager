@@ -3,8 +3,6 @@
 
 #include <fmt/core.h>
 
-// TODO: Try to reduce duplicated code
-
 HighInterestSavingsAccount::HighInterestSavingsAccount(const HighInterestSavingsAccount& other)
     : AccountInfo(other)
     , interestHandler_{other.interestHandler_}

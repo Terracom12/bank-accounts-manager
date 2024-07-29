@@ -18,7 +18,6 @@ public:
         : dollars_{static_cast<uint64_t>(dollars)}
         , cents_{static_cast<uint64_t>(cents)} {
         handleChange();
-        // TODO
         util::ctassert(dollars >= 0, "Dollars must be positive");
         util::ctassert(cents >= 0, "Cents must be positive");
     }
@@ -26,10 +25,7 @@ public:
     constexpr std::uint64_t dollars() const { return dollars_; }
     constexpr std::uint64_t cents() const { return cents_; }
 
-    explicit operator std::string() const {
-        // TODO: Better currency support; or just force en_US format
-        return fmt::format(std::locale{}, "${:L}.{:02}", dollars_, cents_);
-    }
+    explicit operator std::string() const { return fmt::format("${}.{:02}", util::CommaSeperated{dollars_}, cents_); }
 
     constexpr Money operator+(const Money& rhs) const { return Money{*this} += rhs; }
     constexpr Money& operator+=(const Money& rhs) {
@@ -78,7 +74,6 @@ private:
     std::uint64_t cents_ = 0;
 };
 
-// TODO: Refactor
 constexpr Money operator""_dollars(const char* str) {
     // NOLINTBEGIN
     auto dollars = util::atoi(str);
