@@ -12,7 +12,7 @@ public:
                    TimeManager auto timeManager = {});
     SavingsAccount(const SavingsAccount& other);
     SavingsAccount(SavingsAccount&&) = default;
-    SavingsAccount& operator=(const SavingsAccount&);
+    SavingsAccount& operator=(const SavingsAccount& rhs);
     SavingsAccount& operator=(SavingsAccount&&) = default;
     ~SavingsAccount() = default;
 

@@ -114,14 +114,14 @@ template <std::integral IntType>
 auto format_as(CommaSeperated<IntType> value) {
     std::string result;
     std::array<int, std::numeric_limits<IntType>::digits10> digits{};
-    int numDigits = 0;
+    std::size_t numDigits = 0;
     for (auto val = value.inner; val > 0; val /= 10) {
-        digits[numDigits] = static_cast<int>(val % 10);
+        digits.at(numDigits) = static_cast<int>(val % 10);
         ++numDigits;
     }
 
-    for (int i = 0; i < numDigits; ++i) {
-        char val = static_cast<char>('0' + digits[i]);
+    for (std::size_t i = 0; i < numDigits; ++i) {
+        char val = static_cast<char>('0' + digits.at(i));
 
         if (i != 0 && i % 3 == 0) {
             result += std::string{","} + val;

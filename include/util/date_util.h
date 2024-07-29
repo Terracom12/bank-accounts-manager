@@ -142,9 +142,11 @@ class RealTimeManager : public detail::Registry<RealTimeManager>
 public:
     static void updateAll() {
         auto date = getDate();
+        // clang-format off
         detail::Registry<RealTimeManager>::updateAll([&](int /*id*/, auto& callback) {
             callback(DatePeriod{lastUpdate_, date});
         });
+        // clang-format on
 
         lastUpdate_ = date;
     }
@@ -165,9 +167,11 @@ class SimTimeManager : public detail::Registry<SimTimeManager>
 {
 public:
     static void updateAll() {
+        // clang-format off
         detail::Registry<SimTimeManager>::updateAll([](int /*id*/, auto& callback) {
             callback(DatePeriod{lastUpdate_, date_});
         });
+        // clang-format on
 
         lastUpdate_ = date_;
     }

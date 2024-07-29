@@ -75,8 +75,8 @@ private:
     class Model : public virtual Concept
     {
     public:
-        explicit Model(const AccountType& account)
-            : impl_(account) {}
+        explicit Model(AccountType account)
+            : impl_(std::move(account)) {}
         std::unique_ptr<Concept> clone() override { return std::make_unique<Model>(*this); }
 
         std::string_view getAccountName() const override { return impl_.getAccountName(); };

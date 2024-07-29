@@ -13,26 +13,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: LLVM Dependencies
+        uses: aminya/setup-cpp@v1
+        with:
+          cppcheck: true
+          clangtidy: 17
+          clangformat: 17
+
       - uses: ./.github/actions/setup
         with:
           only-compile-commands: "true"
 
-      - uses: Terracom12/cpp-linter-action@main # spell-checker: disable-line
-        id: linter
-        continue-on-error: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          style: file
-          ignore: "build"
-          version: 18
-          # verbosity: 'debug'
-          files-changed-only: false
-          file-annotations: true
-          thread-comments: false
-          tidy-checks: ""
-          step-summary: true
-
-      - name: Fail fast?!
-        if: steps.linter.outputs.checks-failed != 0
-        run: exit 1
+      - name: Run linters
+        run: ./scripts/lint.sh

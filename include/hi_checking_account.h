@@ -17,7 +17,7 @@ public:
                                 const InterestHandler& interestHandler, TimeManager auto timeManager = {});
     HighInterestCheckingAccount(const HighInterestCheckingAccount& other);
     HighInterestCheckingAccount(HighInterestCheckingAccount&&) = default;
-    HighInterestCheckingAccount& operator=(const HighInterestCheckingAccount&);
+    HighInterestCheckingAccount& operator=(const HighInterestCheckingAccount& rhs);
     HighInterestCheckingAccount& operator=(HighInterestCheckingAccount&&) = default;
     ~HighInterestCheckingAccount() = default;
 

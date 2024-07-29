@@ -24,7 +24,7 @@ public:
                                 const InterestHandler& interestHandler, TimeManager auto timeManager = {});
     CertificateOfDepositAccount(const CertificateOfDepositAccount& other);
     CertificateOfDepositAccount(CertificateOfDepositAccount&&) = default;
-    CertificateOfDepositAccount& operator=(const CertificateOfDepositAccount&);
+    CertificateOfDepositAccount& operator=(const CertificateOfDepositAccount& rhs);
     CertificateOfDepositAccount& operator=(CertificateOfDepositAccount&&) = default;
     ~CertificateOfDepositAccount() = default;
 

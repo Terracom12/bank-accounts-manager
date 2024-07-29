@@ -16,7 +16,7 @@ public:
                                    const InterestHandler& interestHandler, TimeManager auto timeManager = {});
     NoServiceChargeCheckingAccount(const NoServiceChargeCheckingAccount& other);
     NoServiceChargeCheckingAccount(NoServiceChargeCheckingAccount&&) = default;
-    NoServiceChargeCheckingAccount& operator=(const NoServiceChargeCheckingAccount&);
+    NoServiceChargeCheckingAccount& operator=(const NoServiceChargeCheckingAccount& rhs);
     NoServiceChargeCheckingAccount& operator=(NoServiceChargeCheckingAccount&&) = default;
     ~NoServiceChargeCheckingAccount() = default;
 
