@@ -9,18 +9,23 @@ permissions:
   id-token: write
 
 jobs:
-  build:
+  build-docs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Install Requirements
+      - name: Install Doxygen and Graphviz
+        uses: aminya/setup-cpp@v1
+        with:
+          doxygen: 11
+          graphviz: true
+
+
+      - name: Install Other Requirements
         run: |
           sudo apt update -y
           sudo apt-get install \
-              doxygen \
-              graphviz \
               texlive-base \
               texlive-latex-extra \
               texlive-fonts-extra \
@@ -49,12 +54,12 @@ jobs:
         with:
           path: ./docs/uml
 
-  deploy:
+  deploy-docs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-docs
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
