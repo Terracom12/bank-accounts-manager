@@ -1,3 +1,8 @@
+/*! \file account_info.h
+    \brief File containing the AccountInfo class and SelfT template
+
+    The Account Info class is declared within this header file
+*/
 #pragma once
 
 #include "money_type.h"
@@ -10,6 +15,10 @@
 #include <type_traits>
 #include <vector>
 
+//! Manages functions receiving basic information for BankAccount
+/*!
+  The AccountInfo class generates monthly statements and keep strack of the account information
+*/
 class AccountInfo
 {
 public:
@@ -42,6 +51,7 @@ private:
     std::vector<MonthlyStatement> monthlyStatements_;
 };
 
+//! This template helps generate the monthly statements
 template <typename SelfT>
     requires std::is_same_v<AccountInfo, std::remove_const_t<SelfT>>
 util::retain_const_t<SelfT, MonthlyStatement&> AccountInfo::getStatementHelper(SelfT& self, Date when) {
