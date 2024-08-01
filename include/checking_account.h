@@ -1,3 +1,9 @@
+/*! \file checking_account.h
+    \brief File containing the CheckingAccount class and concept
+
+    The CheckingAccount class and its nested classes, Concept and Model, as well as CheckingAccountConcept
+    are declared within this header file
+*/
 #pragma once
 
 #include "bank_account.h"
@@ -9,11 +15,19 @@
 #include <string_view>
 #include <vector>
 
+//! Concept for CheckingAccount to be used with the Model class template
+/*!
+    This concept constrains the writeCheck member function
+*/
 template <typename T>
 concept CheckingAccountConcept = BankAccountConcept<T> && requires(T acc) {
     { acc.writeCheck(Money{}) } -> std::same_as<void>;
 };
 
+//! Manages bank account actions implemented within the different checking accounts
+/*!
+    Functions similarily to BankAccount but implements the writeCheck member function
+*/
 class CheckingAccount
 {
 public:
@@ -47,12 +61,22 @@ public:
     void writeCheck(const Money& amount) { pimpl_->writeCheck(amount); };
 
 private:
+//! Abstract class inheriting from BankAccount
+/*!
+  The abstract class Concept inherits member functions from BankAccount and adds a new member function called
+  writeCheck
+*/
     class Concept : public virtual BankAccount::Concept
     {
     public:
         virtual void writeCheck(const Money& amount) = 0;
     };
 
+//! Template argument for CheckingAccountConcept inheriting from Concept and BankAccount
+/*!
+  This class is nested within CheckingAccount and overrides the Concept class as well while inheriting 
+  from BankAccount the same as COncept does
+*/
     template <CheckingAccountConcept AccountType>
     class Model : public Concept, public BankAccount::Model<AccountType>
     {
