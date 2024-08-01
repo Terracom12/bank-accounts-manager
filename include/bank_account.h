@@ -14,7 +14,7 @@
 #include <string_view>
 #include <vector>
 
-//! BankAccountConcept
+//! Concept for BankAccount to be used with the model class template
 /*!
   This concept constrains account types requiring that it has declared copy/move operations,
   and that each function signature and return type is as expected
@@ -32,7 +32,7 @@ concept BankAccountConcept = std::copyable<T> && requires(const T constAcc, T ac
     { acc.withdraw(Money{}) } -> std::same_as<void>;
 };
 
-//! BankAccount class
+//! Manages basic bank account actions through multiple nested classes
 /*!
   The base class delegates all actions to underlying accounts via a polymorphic reference to Concept
 */
@@ -67,10 +67,11 @@ public:
     void deposit(const Money& amount) { pimpl_->deposit(amount); };
     void withdraw(const Money& amount) { pimpl_->withdraw(amount); };
 
+//! Establishes CheckingAccount as a friend class of BankAccount
     friend class CheckingAccount;
 
 private:
-//! Concept class
+//! Abstract class overriden by Model inside BankAccount
 /*!
   An abstract class nested within BankAccount declaring pure virtual versions of functions in BankAccount
 */
@@ -90,9 +91,9 @@ private:
         virtual void withdraw(const Money& amount) = 0;
     };
 
-//! Model Class Template
+//! Template argument for class Model inheriting from Concept inside the BankAccount class
 /*!
-  This class is also nested within BankAccount and overrides the virtual functions of Concept, 
+  This class is nested within BankAccount and overrides the virtual functions of Concept, 
   adapting to account types with the specified type-requirements
 */
     template <BankAccountConcept AccountType>
