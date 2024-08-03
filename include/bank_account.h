@@ -67,14 +67,14 @@ public:
     void deposit(const Money& amount) { pimpl_->deposit(amount); };
     void withdraw(const Money& amount) { pimpl_->withdraw(amount); };
 
-//! Establishes CheckingAccount as a friend class of BankAccount
+    //! Establishes CheckingAccount as a friend class of BankAccount
     friend class CheckingAccount;
 
 private:
-//! Abstract class overriden by Model inside BankAccount
-/*!
-  An abstract class nested within BankAccount declaring pure virtual versions of functions in BankAccount
-*/
+    //! Abstract class overriden by Model inside BankAccount
+    /*!
+      An abstract class nested within BankAccount declaring pure virtual versions of functions in BankAccount
+    */
     class Concept
     {
     public:
@@ -91,11 +91,11 @@ private:
         virtual void withdraw(const Money& amount) = 0;
     };
 
-//! Template argument for class Model inheriting from Concept inside the BankAccount class
-/*!
-  This class is nested within BankAccount and overrides the virtual functions of Concept, 
-  adapting to account types with the specified type-requirements
-*/
+    //! Template argument for class Model inheriting from Concept inside the BankAccount class
+    /*!
+      This class is nested within BankAccount and overrides the virtual functions of Concept,
+      adapting to account types with the specified type-requirements
+    */
     template <BankAccountConcept AccountType>
     class Model : public virtual Concept
     {

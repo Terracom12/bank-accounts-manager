@@ -61,22 +61,22 @@ public:
     void writeCheck(const Money& amount) { pimpl_->writeCheck(amount); };
 
 private:
-//! Abstract class inheriting from BankAccount
-/*!
-  The abstract class Concept inherits member functions from BankAccount and adds a new member function called
-  writeCheck
-*/
+    //! Abstract class inheriting from BankAccount
+    /*!
+      The abstract class Concept inherits member functions from BankAccount and adds a new member function called
+      writeCheck
+    */
     class Concept : public virtual BankAccount::Concept
     {
     public:
         virtual void writeCheck(const Money& amount) = 0;
     };
 
-//! Template argument for CheckingAccountConcept inheriting from Concept and BankAccount
-/*!
-  This class is nested within CheckingAccount and overrides the Concept class as well while inheriting 
-  from BankAccount the same as COncept does
-*/
+    //! Template argument for CheckingAccountConcept inheriting from Concept and BankAccount
+    /*!
+      This class is nested within CheckingAccount and overrides the Concept class as well while inheriting
+      from BankAccount the same as COncept does
+    */
     template <CheckingAccountConcept AccountType>
     class Model : public Concept, public BankAccount::Model<AccountType>
     {
