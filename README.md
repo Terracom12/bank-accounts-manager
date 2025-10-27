@@ -1,4 +1,4 @@
-# CS1C Project
+# Bank Accounts Manager
 
 [![Test](https://github.com/Terracom12/cs1c-project/actions/workflows/test.yaml/badge.svg)](https://github.com/Terracom12/cs1c-project/actions/workflows/test.yaml)
 [![Lint](https://github.com/Terracom12/cs1c-project/actions/workflows/lint.yaml/badge.svg)](https://github.com/Terracom12/cs1c-project/actions/workflows/lint.yaml)
